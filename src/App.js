@@ -10,9 +10,13 @@ export default function App() {
 }
 
 function Counter() {
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(1);
   const [count, setCount] = useState(0);
 
+  function handleReset() {
+    setStep(1);
+    setCount(0);
+  }
   return (
     <>
       <input
@@ -37,7 +41,9 @@ function Counter() {
 
       <DisplayDate count={count} />
 
-      {count !== 0 && <button onClick={() => setCount(0)}>Reset</button>}
+      {(count !== 0 || step !== 1) && (
+        <button onClick={handleReset}>Reset</button>
+      )}
     </>
   );
 }
