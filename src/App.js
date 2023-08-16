@@ -2,42 +2,49 @@ import { useState } from "react";
 import "./styles.css";
 
 export default function App() {
-  const [step, setStep] = useState(1);
-  const [count, setCount] = useState(1);
-
   return (
     <div className="App">
-      <Counter counter={step} setCounter={setStep} increment={1} text="Step" />
-      <Counter
-        counter={count}
-        setCounter={setCount}
-        increment={step}
-        text="Count"
-      />
-      <DisplayDate step={step} count={count} />
+      <Counter />
     </div>
   );
 }
 
-function Counter({ counter, setCounter, increment, text }) {
+function Counter() {
+  const [step, setStep] = useState(1);
+  const [count, setCount] = useState(0);
+
   return (
-    <div>
-      <button onClick={() => setCounter((c) => c - increment)}>-</button>
-      <span>{`${text}: ${counter}`}</span>
-      <button onClick={() => setCounter((c) => c + increment)}>+</button>
-    </div>
+    <>
+      <div>
+        <button onClick={() => setStep((c) => c - 1)}>-</button>
+        <span>{`Step: ${step}`}</span>
+        <button onClick={() => setStep((c) => c + 1)}>+</button>
+      </div>
+      <div>
+        <button onClick={() => setCount((c) => c - step)}>-</button>
+        <span>{`Counter: ${count}`}</span>
+        <button onClick={() => setCount((c) => c + step)}>+</button>
+      </div>
+      <DisplayDate count={count} />
+    </>
   );
 }
 
 function DisplayDate({ count }) {
-  const adjustedDate = new Date(
+  const date = new Date(
     Date.now() + count * 24 * 60 * 60 * 1000
   ).toDateString();
 
   return (
     <div>
       <p>
-        {count} days from today is {adjustedDate}
+        {count === 0
+          ? "Today is "
+          : count > 0
+          ? `${count} day${count === 1 ? "" : "s"} from now is `
+          : `${count * -1} day${count === -1 ? "" : "s"} ago was `}
+        {date}
+        {/* // {count} days from today is {date} */}
       </p>
     </div>
   );
